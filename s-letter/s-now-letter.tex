@@ -1,0 +1,281 @@
+%D \module
+%D    [       file=s-letter,
+%D         version=2005.7.13,
+%D           title=N.O.W. \CONTEXT\ Styles,
+%D        subtitle=Letter,
+%D          author={Nikolai Weibull},
+%D            date=\currentdate,
+%D       copyright={Nikolai Weibull}]
+%C
+%C This module is NOT part of the \CONTEXT\ macro||package.
+%C This module is free software; you can redistribute it and/or modify
+%C it under the terms of the GNU General Public License as published by
+%C the Free Software Foundation; either version 2 of the License, or
+%C (at your option) any later version.
+%C
+%C This module is distributed in the hope that it will be useful,
+%C but WITHOUT ANY WARRANTY; without even the implied warranty of
+%C MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%C GNU General Public License for more details.
+
+\writestatus{loading}{N.O.W. Styles / Letter}
+
+\unprotect
+
+\enableregime[utf]
+
+\usemodule[doc-general]
+
+\setupcolors[state=start]
+
+\setupinteraction[state=start]
+
+\setupurl[color=blue]
+
+\setupwhitespace[small]
+\setupindenting[medium]
+
+\setupitemgroups
+  [indentnext=no]
+
+\usetypescript[palatino][ec]
+\setupbodyfont[palatino]
+
+\def\firstpageheaderheight{9.5cm}
+\def\normalheaderheight{1.0cm}
+\def\logoboxheight{3.4cm}
+\def\normaltextheight{27.4cm}
+\def\normalfooterheight{1.0cm}
+
+\setuppapersize[A4][A4]
+\setuplayout[location=doublesided]
+\setuppagenumbering[location=]
+
+\def\letter#1%
+  {\setuplayer[normalheaderlayer][state=reset]%
+   \setuplayer[allpagefooterlayer][state=reset]%
+   \letterhead{#1}%
+   \setuplayer[firstheaderlayer][state=reset]}
+
+\definehead
+  [letterhead]
+  [title]
+
+\setuphead
+  [letterhead]
+  [placehead=no,
+   before={\setups{firstpagelayoutsetup}},
+   after=,
+   header=firstpageheader,
+   page=firstpagebreak,
+   coupling=title]
+
+\definepagebreak
+  [firstpagebreak]
+  [yes,header,footer,right]
+
+\startsetups{firstpagelayoutsetup}
+  \setuplayout
+    [backspace=2.46cm,
+     topspace=1.2cm,
+     top=0cm,
+     bottom=0cm,
+     topdistance=0cm,
+     bottomdistance=0cm,
+     header=\firstpageheaderheight,
+     footer=\normalfooterheight,
+     headerdistance=0cm,
+     footerdistance=0cm,
+     leftedge=0cm,
+     rightedge=0cm,
+     leftedgedistance=0cm,
+     rightedgedistance=0cm,
+     leftmargin=1.5cm,
+     rightmargin=1.5cm,
+     leftmargindistance=0.42cm,
+     rightmargindistance=0.42cm,
+     width=16.5cm,
+     height=\normaltextheight]
+\stopsetups
+
+\startsetups{normalpagelayoutsetup}
+  \setuplayout
+    [
+     backspace=2.46cm,
+     topspace=1.2cm,
+     top=0cm,
+     bottom=0cm,
+     topdistance=0cm,
+     bottomdistance=0cm,
+     header=\normalheaderheight,
+     footer=\normalfooterheight,
+     headerdistance=0cm,
+     footerdistance=0cm,
+     leftedge=0cm,
+     rightedge=0cm,
+     leftedgedistance=0cm,
+     rightedgedistance=0cm,
+     leftmargin=1.5cm,
+     rightmargin=1.5cm,
+     leftmargindistance=0.42cm,
+     rightmargindistance=0.42cm,
+     width=16.5cm,
+     height=\normaltextheight,
+     textheight=\normaltextheight]
+\stopsetups
+
+\definetext[firstpageheader][header][\setups{firstpagesetup}]
+
+\startsetups{firstpagesetup}
+  \setups{firstpageintrosetup}
+  \framed
+    [width=\makeupwidth,
+     height=\headerheight,
+     background={firstpagelayer,firstheaderlayer},
+     frame=off]
+    {}
+\stopsetups
+
+\setups{normalpagelayoutsetup}
+\appendtoks\setups{normalpagelayoutsetup}\to\everyaftershipout
+
+\startsetups{normalheadersetups}
+  \setups{normalheaderlayersetup}
+  \framed
+    [width=\makeupwidth,
+     height=\headerheight,
+     background=normalheaderlayer,
+     frame=off]
+    {}
+\stopsetups
+
+\setupheadertexts[\setups{normalheadersetups}]
+
+\startsetups{allpagefootersetup}
+  \setups{allpagefooterlayersetup}
+  \framed
+    [width=\makeupwidth,
+     height=\footerheight,
+     background=allpagefooterlayer,
+     frame=off]
+    {}
+\stopsetups
+
+\setupfootertexts[\setups{allpagefootersetup}]
+
+\definelayer
+  [firstpagelayer]
+  [width=\makeupwidth,
+   height=\firstpageheaderheight]
+
+\startsetups{firstpageintrosetup}
+  \setlayerframed
+    [firstpagelayer]
+    [corner={left,top},location={right,bottom}]
+    [height=3.4cm,width=\overlaywidth,frame=off,offset=none]
+    {}
+  % .5*\overlaywidth
+  \setlayerframed
+    [firstpagelayer]
+    [y=4.1cm,location={right,bottom}]
+    [height=3.6cm,width=8cm,frame=off,offset=none,align={right,top}]
+    {\letteraddressee}
+  \setlayerframed
+    [firstpagelayer]
+    [corner={right},y=4.1cm,location={left,bottom}]
+    [height=3.6cm,width=8cm,frame=off,offset=none,align={left,top}]
+    {\lettersender}
+  \setlayerframed
+    [firstpagelayer]
+    [corner={right},y=8.7cm,location={left,bottom}]
+    [height=3.6cm,width=8cm,frame=off,offset=none,align={left,top}]
+    {\os \date[][month,day,{\rm , },year]}
+\stopsetups
+
+\def\letteraddressee{}
+\def\addressee#1%
+  {\bgroup
+     \let\\=\crlf
+     \gdef\letteraddressee{#1}
+   \egroup}
+
+\def\lettersender{}
+\def\sender#1%
+  {\bgroup
+     \let\\=\crlf
+     \gdef\lettersender{#1}
+   \egroup}
+
+\definelayer
+  [firstheaderlayer]
+  [width=\makeupwidth,
+   height=\logoboxheight,
+   width=\overlaywidth]
+
+\definelayer
+  [normalheaderlayer]
+  [width=\makeupwidth,
+   height=\normalheaderheight]
+
+\startsetups{normalheaderlayersetup}
+  \setlayerframed
+    [normalheaderlayer]
+    [corner={top,left},location={bottom,right}]
+    [height=\normalheaderheight,width=\makeupwidth,frame=off,offset=none,align={high,middle}]
+    {\letterheadertext}
+\stopsetups
+
+\def\letterheadertext{}
+\def\headercontent#1{\def\letterheadertext{#1}}
+
+\definelayer
+  [allpagefooterlayer]
+  [width=\makeupwidth,
+   height=\footerheight]
+
+\startsetups{allpagefooterlayersetup}
+  \setlayerframed
+    [allpagefooterlayer]
+    [corner={right,bottom},location={left,top}]
+    [height=\footerheight,width=\makeupwidth,frame=off,offset=none,align={low,middle}]
+    {\letterfootertext}
+\stopsetups
+
+\def\letterfootertext{}
+\def\footercontent#1{\def\letterfootertext{#1}}
+
+\def\subject#1{\noindent {\bf #1}\vskip2ex}
+
+\def\subsubject#1{\vskip1ex\noindent {\it #1}\vskip1ex}
+
+\def\greeting#1{\testpage[8]\vskip1ex\noindent {\it #1}\vskip1ex}
+\def\signature#1%
+  {\bgroup
+     \let\\=\crlf
+     \vskip8ex
+     \vtop{#1}
+   \egroup}
+
+\startuniqueMPgraphic{FootnoteRule}
+  vardef sine(expr x) =
+    .75 * sind(x * ((3.14159 * 2) / 5) * (360 / (3.14 * 2)))
+  enddef;
+  def sinewave(expr cycles) =
+    ( origin{curl 0} 
+      for x = 1 upto (cycles * 5 - 1):
+        .. (x,sine(x))
+      endfor
+      .. {curl 0}((cycles * 5),sine(cycles * 5)) )
+  enddef;
+  draw sinewave(20) scaled 1pt;
+\stopuniqueMPgraphic
+
+\def\FootnoteRule%
+  {\strut\reuseMPgraphic{FootnoteRule}\vskip0pt}
+ 
+\setupfootnotes
+  [rule=\FootnoteRule,
+   before=\blank,
+   way=bychapter]
+
+\protect \endinput

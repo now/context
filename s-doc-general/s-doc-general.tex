@@ -1,0 +1,53 @@
+%D \module
+%D    [       file=s-doc-general,
+%D         version=2005.7.13,
+%D           title=N.O.W. \CONTEXT\ Styles,
+%D        subtitle=General,
+%D          author={Nikolai Weibull},
+%D            date=\currentdate,
+%D       copyright={Nikolai Weibull}]
+%C
+%C This module is NOT part of the \CONTEXT\ macro||package.
+%C This module is free software; you can redistribute it and/or modify
+%C it under the terms of the GNU General Public License as published by
+%C the Free Software Foundation; either version 2 of the License, or
+%C (at your option) any later version.
+%C
+%C This module is distributed in the hope that it will be useful,
+%C but WITHOUT ANY WARRANTY; without even the implied warranty of
+%C MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%C GNU General Public License for more details.
+
+\writestatus{loading}{N.O.W. Styles / General}
+
+\unprotect
+
+\startuniqueMPgraphic{FootnoteRule}{amplitude,color}
+  numeric amp; amp := \MPvar{amplitude};
+  vardef sine(expr x) =
+    amp * sind(x * ((3.14159 * 2) / 5) * (360 / (3.14 * 2)))
+  enddef;
+  def sinewave(expr cycles) =
+    ( origin{curl 0}
+      for x = 1 upto (cycles * 5 - 1):
+        .. (x,sine(x))
+      endfor
+      .. {curl 0}((cycles * 5),sine(cycles * 5)) )
+  enddef;
+  draw sinewave(20) scaled 1pt withcolor \MPvar{color};
+\stopuniqueMPgraphic
+
+\setupMPvariables
+  [FootnoteRule]
+  [amplitude=0.5,
+   color=titlecolor]
+   
+\def\FootnoteRule%
+  {\strut\reuseMPgraphic{FootnoteRule}\vskip0pt}
+     
+\setupfootnotes
+  [rule=\FootnoteRule,
+   before=\blank,
+   way=bychapter]
+
+\protect \endinput
